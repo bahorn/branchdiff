@@ -12,6 +12,12 @@ unchanged commits, and displays modified commits side by side.
 
 Uses the commit summary to find commits that are the same.
 
+
+Install the dependencies with:
+```
+pip install GitPython Jinja2
+```
+
 ## License
 
 MIT
