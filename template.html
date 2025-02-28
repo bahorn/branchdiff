@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+ .row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+  max-width: 800px;
+  margin: 10px;
+}
+
+pre {
+    font-size: 9px;
+}
+</style>
+    </head>
+    <body>
+        <main class="container">
+            <h1>Branch Diff</h1>
+            <ul>
+                <li>parent: {{parent}}</li>
+                <li>a: {{branch_a}}</li>
+                <li>b: {{branch_b}}</li>
+            </ul>
+            {% if a_not_in_b|length > 0 %}
+            <h2>Commits in {{branch_a}}, not in {{branch_b}}</h2>
+            <ul>
+                {% for commit in a_not_in_b %}
+                    <li>{{commit}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if b_not_in_a|length > 0 %}
+            <h2>Commits in {{branch_b}}, not in {{branch_a}}</h2>
+            <ul>
+                {% for commit in b_not_in_a %}
+                    <li>{{commit}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if modified|length > 0 %}
+            <h2>Modified Commits</h2>
+                {% for commit, a_ver, b_ver in modified %}
+                <h3>{{ commit }}</h3>
+                <div class="row">
+                    <div class="column">
+                        <pre><code class="language-diff"><xmp>{{a_ver}}</xmp></code></pre>
+                    </div>
+                   <div class="column">
+                        <pre><code class="language-diff"><xmp>{{b_ver}}</xmp></code></pre>
+                    </div>
+
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if same|length > 0 %}
+            <h2>Unchanged Commits</h2>
+            <ul>
+                {% for commit in same %}
+                    <li>{{commit}}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </main>
+        <script>hljs.highlightAll();</script>
+    </body>
+</html>
